@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MoviesApi.Models;
 using MoviesApi.Services;
+using System;
 
 
 
@@ -10,8 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+options.UseSqlServer(connectionString));
+
+// for jwt 
+builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 // Add services to the container.
+
 builder.Services.AddTransient<IGenresService, GenresService>();
 builder.Services.AddTransient<IMoviesService, MoviesService>();
 
